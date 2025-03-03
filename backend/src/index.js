@@ -4,20 +4,15 @@ require('./config/db')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 require('./config/socket')
-const path = require('path')
 
 
 const authRoute = require('./routes/auth.route')
 const messageRoute = require('./routes/message.route')
-const { server, app } = require('./config/socket')
+const { server,app } = require('./config/socket')
 
 
 
 // const app = express()
-
-
-const PORT = 3000
-const __dirname = path.resolve()
 
 
 
@@ -33,15 +28,8 @@ app.use(cors({
 app.use("/api/auth", authRoute)
 app.use("/api/messages", messageRoute)
 
-if(process.env.NODE_ENV==="production"){
-    app.use(express.static(path.join(__dirname,"../frontend/dist")))
 
-
-    app.get("*",(req,res)=>{
-        res.sendFile(path.join(__dirname,"../frontend","dist","index.html"))
-    })
-}
-
+const PORT = 3000
 
 
 server.listen(PORT, () => {
