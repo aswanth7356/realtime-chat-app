@@ -3,7 +3,9 @@ require('dotenv').config()
 require('./config/db')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
+const path = require('path')
 require('./config/socket')
+
 
 
 const authRoute = require('./routes/auth.route')
@@ -30,6 +32,15 @@ app.use("/api/messages", messageRoute)
 
 
 const PORT = 3000
+const _dirname=path.resolve()
+
+
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, "../frontend/dist"))); // Serve Vite build
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname, "../frontend/dist", "index.html"));
+    });
+}
 
 
 server.listen(PORT, () => {
